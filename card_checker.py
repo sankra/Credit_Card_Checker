@@ -1,5 +1,5 @@
 def card_checker(card_no):
-    card_no = list(card_no.replace(" ", ""))
+    card_no = list(card_no.replace(" ", "")) # Removes extra spaces in the input and converts it into a list.
     total_sum = 0
 
     if len(card_no) != 16:

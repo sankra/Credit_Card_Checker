@@ -1,5 +1,11 @@
 def card_checker(card_no):
-    card_no = list(card_no.replace(" ", "")) # Removes extra spaces in the input and converts it into a list.
+    card_no = card_no.replace(" ", "")
+    
+    if card_no.isdigit() == False:
+        print('Invalid Card')
+        return
+    card_no = list(card_no)
+
     total_sum = 0
 
     if len(card_no) != 16:

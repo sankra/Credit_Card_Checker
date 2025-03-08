@@ -1,7 +1,7 @@
 def card_checker(card_no):
     card_no = card_no.replace(" ", "")
     
-    if card_no.isdigit() == False:
+    if card_no.isdigit() == False: #checking if all the entered characters entered by user are numerics.
         print('Invalid Card')
         return
     card_no = list(card_no)

@@ -1,53 +1,58 @@
+import re
+
 def identify_card_type(card_no):
     """Identifies the type of credit/debit card based on the number."""
-        
-    if card_no.startswith("4"):
-        return "Visa"
-    elif card_no.startswith(("51", "52", "53", "54", "55")):
-        return "Mastercard"
-    elif card_no.startswith(("34", "37")):
-        return "American Express"
-    elif card_no.startswith("6011") or card_no.startswith("65"):
-        return "Discover"
-    else:
-        return "Unknown"
+    card_types = {
+        "Visa": r"^4\d{12,18}$",
+        "Mastercard": r"^5[1-5]\d{14}$",
+        "American Express": r"^3[47]\d{13}$",
+        "Discover": r"^6(?:011|5\d{2})\d{12}$",
+        "Diners Club": r"^3(?:0[0-5]|[68]\d)\d{11}$",
+        "JCB": r"^(?:2131|1800|35\d{2})\d{12}$",
+        "UnionPay": r"^62\d{14,17}$"
+    }
+    
+    for card_type, pattern in card_types.items():
+        if re.match(pattern, card_no):
+            return card_type
+    return "Unknown"
 
+def is_valid_luhn(card_no):
+    """Validates card number using Luhn's algorithm."""
+    card_no = [int(digit) for digit in card_no[::-1]]  # Reverse the number
+    total_sum = sum(card_no[0::2])  # Add digits in odd positions
+
+    for digit in card_no[1::2]:  # Double even-positioned digits
+        doubled = digit * 2
+        total_sum += doubled if doubled < 10 else doubled - 9  # Sum digits if >= 10
+
+    return total_sum % 10 == 0
 
 def card_checker(card_no):
+    """Checks card validity and displays information."""
     card_no = card_no.replace(" ", "").replace("-", "")
+
+    if not card_no.isdigit():
+        print("Invalid Card: Contains non-numeric characters.")
+        return
+
     card_type = identify_card_type(card_no)
-    if card_no.isdigit() == False:
-        print('Invalid Card')
-        return
-    card_no = list(card_no)
-
-    total_sum = 0
-
-    if len(card_no) != 16:
-        print('Invalid Card')
+    if card_type == "Unknown":
+        print("Invalid Card: Unrecognized card type.")
         return
 
-    for i in range(len(card_no)):  # Iterate over indices
-        num = int(card_no[i])  # Convert character to integer
-
-        if i % 2 == 0:  # Double every second digit (assuming Luhn's Algorithm-like approach)
-            temp = num * 2
-            if temp >= 10:  # Sum the digits of a double-digit number
-                total_sum += temp // 10 + temp % 10
-            else:
-                total_sum += temp
-        else:
-            total_sum += num  # Directly add odd-positioned digits
-
-    if total_sum % 10 == 0:
-        print('Valid Credit / Debit Card')
-        print(card_type)
+    if is_valid_luhn(card_no):
+        masked_card = "*" * (len(card_no) - 4) + card_no[-4:]  # Mask all but last 4 digits
+        print(f"Valid {card_type} Card: {masked_card}")
     else:
-        print('Invalid Card')
+        print("Invalid Card: Failed Luhn check.")
 
 def main():
-    card_no = input("Enter card number: ")
-    card_checker(card_no)
+    while True:
+        card_no = input("Enter card number (or type 'exit' to quit): ").strip()
+        if card_no.lower() == "exit":
+            break
+        card_checker(card_no)
 
 if __name__ == "__main__":
     main()

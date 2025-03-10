@@ -42,7 +42,7 @@ def card_checker(card_no):
         return
 
     if is_valid_luhn(card_no):
-        masked_card = "*" * (len(card_no) - 4) + card_no[-4:]  # Mask all but last 4 digits
+        masked_card = "*" * (len(card_no) - 4) + card_no[-4:]  # Mask all but last 4 digits for security purposess.
         print(f"Valid {card_type} Card: {masked_card}")
     else:
         print("Invalid Card: Failed Luhn check.")

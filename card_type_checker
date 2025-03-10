@@ -5,3 +5,6 @@ Visa: Starts with 4 (e.g., 4111, 4556)
 Mastercard: Starts with 51, 52, 53, 54, 55 (e.g., 5100, 5522)
 American Express: Starts with 34 or 37
 Discover: Starts with 60, 62, 64, or 65
+Diners Club: 
+JCB: Starts with 2131, 1800, 35
+UnionPay: Starts with 62 

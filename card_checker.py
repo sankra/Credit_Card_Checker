@@ -13,7 +13,7 @@ def identify_card_type(card_no):
     }
     
     for card_type, pattern in card_types.items():
-        if re.match(pattern, card_no):
+        if re.match(pattern, card_no): #checking the credit card pattern to find the card type.
             return card_type
     return "Unknown"
 
